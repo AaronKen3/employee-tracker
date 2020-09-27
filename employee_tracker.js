@@ -84,7 +84,8 @@ function viewAllDepartments() {
 }
 
 function addEmployee() {
-    inquirer.prompt([{
+    inquirer.prompt([
+        {
             type: "input",
             name: "first_name",
             message: "What is the employee's first name?"
@@ -96,12 +97,12 @@ function addEmployee() {
         },
         {
             type: "number",
-            name: "role_Id",
+            name: "role_id",
             message: "What is the employee's role ID?"
         },
         {
             type: "number",
-            name: "manager_Id",
+            name: "manager_id",
             message: "What is the employee's manager's ID?"
         }
     
@@ -115,34 +116,63 @@ function addEmployee() {
 }
 
 function addRole() {
-    inquirer.prompt([{
-        type: "input",
-        name: "title",
-        message: "Enter the employee's title."
-    },
-    {
-        type: "number",
-        name: "salary",
-        message: "Enter the employee's salary."
-    },
-    {
-        type: "number",
-        name: "department_Id",
-        message: "Enter the employee's department ID?"
-    }
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "title",
+            message: "Enter the title."
+        },
+        {
+            type: "number",
+            name: "salary",
+            message: "Enter the salary."
+        },
+        {
+            type: "number",
+            name: "department_Id",
+            message: "Enter the department ID."
+        }
 
-]).then(function(res) {
-    connection.query("INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)", [res.title, res.salary, res.department_id], function(err, data) {
-        console.table(data);
+    ]).then(function(res) {
+        connection.query("INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)", [res.title, res.salary, res.department_id], function(err, data) {
+            console.table(data);
+        })
+        questions();
     })
-    questions();
-})
 }
 
 function addDepartment() {
-    
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "department",
+            message: "Enter the name of the department."
+        }
+    ]).then(function(res) {
+        connection.query("INSERT INTO department (name) VALUES (?)", [res.department], function(err,data) {
+            if (err) throw err;
+            console.table("Department Added");
+            questions();
+        })
+    })
 }
 
 function updateEmployeeRole() {
-
+    inquirer.prompt([
+        {
+            type: "input",
+            name: "name",
+            message: "Which employee profile would you like to update? (Enter their first name)"
+        },
+        {
+            type: "number",
+            name: "role_id",
+            message: "Enter the employee's new role ID"
+        }
+    ]).then(function(res) {
+        connection.query("UPDATE employee SET role_id = ? WHERE first_name = ?", [res.name, res.role_id], function(err,data) {
+           console.table(data);
+        })
+        questions();
+    })
 }
