@@ -84,7 +84,34 @@ function viewAllDepartments() {
 }
 
 function addEmployee() {
-
+    inquirer.prompt([{
+            type: "input",
+            name: "first_name",
+            message: "What is the employee's first name?"
+        },
+        {
+            type: "input",
+            name: "last_name",
+            message: "What is the employee's last name?"
+        },
+        {
+            type: "number",
+            name: "role_Id",
+            message: "What is the employee's role ID?"
+        },
+        {
+            type: "number",
+            name: "manager_Id",
+            message: "What is the employee's manager's ID?"
+        }
+    
+    ]).then(function(res) {
+        connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id VALUES (?,?,?,?)", [res.first_name, res.last_name, res.roleId, res.managerId], function(err, data) {
+            if (err) throw err;
+            console.table("Employee Added");
+            questions();
+        })
+    })
 }
 
 function addRole() {
