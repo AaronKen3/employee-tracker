@@ -18,6 +18,7 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId + "\n");
+    questions();
 });
 
 function questions() {
@@ -69,11 +70,17 @@ function questions() {
 }
 
 function viewAllEmployees() {
-
+    connection.query("SELECT * FROM employee", function (err, data) {
+        console.table(data);
+        questions();
+    })
 }
 
 function viewAllDepartments() {
-
+    connection.query("SELECT * FROM department", function (err, data) {
+        console.table(data);
+        questions();
+    })
 }
 
 function addEmployee() {
